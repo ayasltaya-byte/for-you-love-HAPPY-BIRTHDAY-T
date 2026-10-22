@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday! 🎂✨</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      perspective: 1500px;
+    }
+
+    .card-scene {
+      width: 90%;
+      max-width: 400px;
+      aspect-ratio: 1050 / 1485;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .card-book {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      border-radius: 15px;
+    }
+
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: left center;
+      transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 1s ease;
+    }
+
+    .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ترتيب الطبقات لتفتح مثل الكتاب */
+    #page-1 { z-index: 4; }
+    #page-2 { z-index: 3; }
+    #page-3 { z-index: 2; }
+    #page-4 { z-index: 1; }
+
+    /* حركات التقليب (Flip States) */
+    .card-book.step-1 #page-1 {
+      transform: rotateY(-180deg);
+    }
+    .card-book.step-2 #page-1,
+    .card-book.step-2 #page-2 {
+      transform: rotateY(-180deg);
+    }
+    .card-book.step-3 #page-1,
+    .card-book.step-3 #page-2,
+    .card-book.step-3 #page-3 {
+      transform: rotateY(-180deg);
+    }
+
+    .hint {
+      position: absolute;
+      bottom: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #7d5a86;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: bounce 1.8s infinite;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -8px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-scene" id="scene">
+    <div class="card-book" id="cardBook">
+      <!-- Page 1: Cover -->
+      <div class="page" id="page-1">
+        <img src="cover.png" alt="Cover">
+      </div>
+      <!-- Page 2: Envelope -->
+      <div class="page" id="page-2">
+        <img src="envelope.png" alt="Envelope">
+      </div>
+      <!-- Page 3: Letter -->
+      <div class="page" id="page-3">
+        <img src="letter.png" alt="Letter">
+      </div>
+      <!-- Page 4: Cake -->
+      <div class="page" id="page-4">
+        <img src="cake.png" alt="Cake">
+      </div>
+    </div>
+    <div class="hint" id="hintText">Clique pour ouvrir la carte 🎁</div>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    const book = document.getElementById('cardBook');
+    const hintText = document.getElementById('hintText');
+    const scene = document.getElementById('scene');
+
+    const hints = [
+      "Clique pour ouvrir la carte 🎁",
+      "Clique pour sortir la lettre ✉️",
+      "Clique pour voir le gâteau 🎂",
+      "Joyeux anniversaire ! 🎉✨ (Recommencer)"
+    ];
+
+    scene.addEventListener('click', () => {
+      currentStep++;
+      if (currentStep > 3) {
+        currentStep = 0;
+        book.className = "card-book";
+      } else {
+        book.className = `card-book step-${currentStep}`;
+      }
+      hintText.innerText = hints[currentStep];
+    });
+  </script>
+</body>
+</html>
